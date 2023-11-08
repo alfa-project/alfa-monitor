@@ -1,0 +1,286 @@
+
+# ALFA-Monitor
+(UPDATE ME PLEASE!)
+
+
+<p align="center">
+<img src="docs/Images/alfa-logo.png" alt="monitor" width="300" />
+</p>
+
+
+<!---# Table of Content
+- [ALFA-Monitor](#alfa-monitor)
+- [Table of Content](#table-of-content)
+- [Dependencies](#dependencies)
+  - [ROS](#ros)
+  - [Point Cloud Library (PCL)](#point-cloud-library-pcl)
+- [ALFA-Msg](#alfa-msg)
+- [ROS environment](#ros-environment)
+- [Compile](#compile)
+- [QT Creator](#qt-creator)
+  - [For developers](#for-developers)
+- [Run](#run)
+  - [Terminal](#terminal)
+
+
+# Dependencies
+
+Currently, ALFA-Monitor is only supported by [Ubuntu 18.04](https://releases.ubuntu.com/18.04/), be aware that for other operative systems this version may not work.
+
+## ROS
+
+ALFA-Monitor uses ROS as it's core to communicate, and gather information. Thus, to compile it, ROS is needed.
+
+Execute the following commands in a terminal:
+
+```sh
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+```
+
+```sh
+sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+```
+
+```sh
+sudo apt update
+```
+
+```sh
+sudo apt install ros-melodic-desktop-full
+```
+
+```sh
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+```
+
+```sh
+source ~/.bashrc
+```
+
+## Point Cloud Library (PCL)
+
+Normally, by installing the full desktop version, the PCL is automatically installed. However, if another ROS version is installed, it is needed to install  PCL separately. To install the PCL, just execute the following command:
+
+```sh
+sudo apt install libpcl-dev
+```
+
+# ALFA-Msg
+
+To communicate with derived ALFA-Nodes, ALFA-Monitor uses a set of costume messages that are declared in the [ALFA-Msg](https://github.com/Advanced-LiDAR-Framework-for-Automotive/Messages.git) package. Thus, to compile ALFA-Monitor, the package [ALFA-Msg](https://github.com/Advanced-LiDAR-Framework-for-Automotive/Messages.git) needs to be placed in the same ROS workspace as the ALFA-Monitor
+
+# ROS environment
+
+To compile ALFA-Monitor, the source code needs to be in a ROS environment, to create one just execute the following commands in a terminal:
+
+```sh
+mkdir -p ~/catkin_ws/src
+```
+
+```sh
+cd ~/catkin_ws/
+```
+
+```sh
+source /opt/ros/melodic/setup.bash
+```
+
+```sh
+catkin_make
+```
+
+One way to put the ALFA-Monitor and [ALFA-Msg](https://github.com/DrChipMaster/ALFA-MSG.git) directory in the src directory is to create a link between the folders,  there is an example of command here:
+
+```sh
+ln -s ~/ALFA/ALFA-Monitor/ ~/catkin_ws/src/
+```
+
+```sh
+ln -s ~/ALFA/ALFA-Msg/ ~/catkin_ws/src/
+```
+
+# Compile
+
+To compile just execute the following command in the ROS environment directory, in this case, the catkin_ws directory.
+
+```sh
+source /opt/ros/melodic/setup.bash
+```
+
+```sh
+catkin_make
+```
+
+# QT Creator
+
+## For developers
+
+The Qt version that was used to develop the ALFA-Monitor can be obtained by the following [link](https://ros-qtc-plugin.readthedocs.io/en/latest/_source/How-to-Install-Users.html)
+
+**Note**: Qt needs to be launched by the terminal to have all the environment variables needed. This can be done by executing in a terminal the following:
+
+```sh
+qtcreator-ros
+```
+
+First, its needed to configure the project, which can be done by following image:
+
+![Screenshot_1](https://user-images.githubusercontent.com/15063686/110836660-37ef4680-8298-11eb-8353-d411b7cd4baa.png)
+
+After configuration, an error will appear like the following image.
+
+![Screenshot_2](https://user-images.githubusercontent.com/15063686/110836672-3b82cd80-8298-11eb-808b-028084325d46.png)
+
+To fix this error, on the project tab, scroll to the CMake section and unset all variables and apply changes.
+
+![Screenshot_3](https://user-images.githubusercontent.com/15063686/110836678-3d4c9100-8298-11eb-8520-309befb320b9.png)
+
+# Run
+
+## Terminal
+
+ALFA-Monitor has the ability to launch and close roscore instances. However, to better control the ROS environment, it is recommended to execute a roscore instance in a dedicated terminal.
+
+```sh
+roscore
+```
+
+In another terminal its needed to source the ROS environment by executing the following command in the ROS environment directory:
+
+```sh
+source devel/setup.sh
+```
+--->
+
+```sh
+ros2 run alfa_monitor alfa_monitor
+```
+
+
+USER GUIDE:
+
+# Index
+- [How to subscribe to a ROS Pointcloud2 topic](#how-to-subscribe-to-a-ros-pointcloud2-topic)
+  - [Change Subscribed Topic](#change-subscribed-topic)
+  - [Disconnect Topic](#disconnect-topic)
+  - [Pause and Play Topic Data](#pause-and-play-topic-data)
+- [View Two Pointclouds Simultaneous](#view-two-pointclouds-simultaneous)
+- [Load and Store Pointcloud Frames](#load-and-store-pointcloud-frames)
+- [Load and Play ROS Bags](#load-and-play-ros-bags)
+- [Save Screenshots](#save-screenshots)
+- [Adjust, Sync and Save View Positions](#adjust-sync-and-save-view-positions)
+- [Output Pointclouds](#output-pointclouds)
+- [Visualize Node Metrics](#visualize-node-metrics)
+- [Configure Nodes](#configure-nodes)
+- [Pointcloud Information](#pointcloud-information)
+- [Connected Nodes](#connected-nodes)
+- [Box System](#box-system)
+  
+# How to subscribe to a ROS Pointcloud2 topic
+
+To make the ALFA-Monitor subscribe to a topic in the Pointcloud2 format, the user must click on the bar seen in the next image.
+
+![./docs/Images/subscribe.svg](./docs/Images/subscribe.svg)
+
+Once clicked, a list containing all the possible connection topics will appear. This list is already filtered, and only compatible topics appear. After clicking on the desired topic, the ALFA-Monitor subscribes to that topic and starts receiving point clouds.
+
+![./docs/Images/Monitor_Cloud_topics.png](./docs/Images/Monitor_Cloud_topics.png)
+
+## Change Subscribed Topic
+To change the pointcloud2 subscribed topic on the ALFA-Monitor, the user only needs to repeat the process of subscribing to a topic. Once the new topic is selected, ALFA-Monitor automatically changes the topic in which information is provided.
+
+## Disconnect Topic
+The disconnect process is similar to the subscribe one. The user clicks on the bar, but instead of selecting a topic, the user must select the option "Disconnected". Once clicked, the callback of the topic is destroyed, and ALFA-Monitor will not receive more point clouds from topics.
+
+![./docs/Images/disconnect.svg](./docs/Images/disconnect.svg)
+
+## Pause and Play Topic Data
+
+ALFA-Monitor supports a pause and plays mechanism for the topic callback functionality. This can be used by interaction with the following buttons:
+
+![./docs/Images/PausePlay.svg](./docs/Images/PausePlay.svg)
+
+
+# View Two Pointclouds Simultaneous
+ALFA-Monitors enable the user to observe up to two point clouds simultaneously. The second point cloud viewer can be enabled by checking the following checkbox.
+
+![./docs/Images/splitscreen.svg](./docs/Images/splitscreen.svg)
+The expected outcome from the previous operation should be something like this:
+
+![./docs/Images/splitscreen_v2.svg](./docs/Images/splitscreen_v2.svg)
+
+**Note**: Some operations like subscribing to topics can also be performed in the second point cloud viewer.
+
+# Load and Store Pointcloud Frames
+It is also possible to load and save static frames to the filesystem. The supported formats are .pcd and .ply. To use these functions, the user must use the buttons highlighted in the next image.
+
+![./docs/Images/load_store.svg](./docs/Images/load_store.svg)
+
+# Load and Play ROS Bags
+ROS bags containing pointcloud2 topics can also be loaded to the tool. This can be done by interacting with the following buttons:
+![./docs/Images/bags.svg](./docs/Images/bags.svg)
+Once loaded, the user has different options to use. The user can move to the next frame, or the previous one. Additionally, the user can set to play the bag, at a defined frame rate. This frame rate can be set at any time. Once the bag finishes and the loop option is enabled, ALFA-Monitor will restart the bag.
+
+**Note**: The loaded bag can only be displayed in the point cloud viewer 1.
+
+# Save Screenshots
+ALFA-Monitor allows the user to save screenshots of the current visualization pane in the point cloud viewer 1 to facilitate later analyses of the results obtained. This can be done by pressing the following button.
+
+![./docs/Images/screenshot.svg](./docs/Images/screenshot.svg)
+
+# Adjust, Sync and Save View Positions
+To better manipulate the visualization environment, ALFA allows the following operations: (i) sync, (ii) reset, (iii) save, and (iv) load view points. When the user selects the sync option, the view position of the Point cloud 1 is applied to the Point cloud 2 viewer.  When the user selects the reset option, the view position returns to the state where the ALFA-Monitor started. The store/load option prompts the user to select a file to store/load the view position in a txt file.
+
+![./docs/Images/viewpoint.svg](./docs/Images/viewpoint.svg)
+
+# Output Pointclouds
+The user can enable the ALFA-Monitor to output point clouds to a user defined topic. This can be done by clicking in the following checkbox:
+
+![./docs/Images/output_cloud1.svg](./docs/Images/output_cloud1.svg)
+
+Once enabled, all the new frames displayed in the Pointcloud viewer 1, will also be published on the topic named by the number 1 edit text. The user can also send a single frame, the one displayed in the Pointcloud viewer 1, by pressing the button in 2. The option higlited by the number 3 enables/disables pre processing of the point cloud before publishing it in the desired topic. 
+
+![./docs/Images/output_cloud2.svg](./docs/Images/output_cloud2.svg)
+
+At this moment, ALFA-Monitor supports the injection and removal of points before the publishing. To alter the order of execution, the user must drag and drop the operation in the desired order.
+
+![./docs/Images/output_cloud3.svg](./docs/Images/output_cloud3.svg)
+
+# Visualize Node Metrics
+ALFA-Monitor can receive and display data from other ROS nodes using the ALFA-MSG standard. This format comprises a name tag and a dynamic array of metric messages. These metric messages are composed of a metric name, the metric itself (float 32), and the units. Every topic available with this format is then displayed in the following tab, where the user can double-click on it, to subscribe to it.
+
+![./docs/Images/metrics_monitor.svg](./docs/Images/metrics_monitor.svg)
+
+Once double-clicked on a topic, a new window opens, where all the messages published in the topic will appear in the box labeled as 1. The user can then click on the desired metric, and then the information of that metric is displayed in the box labeled 2.
+
+![./docs/Images/metrics.svg](./docs/Images/metrics.svg)
+
+# Configure Nodes
+ALFA-Monitor can configure ALFA nodes by performing a service call. This service is also an ALFA-MSG standard comprised of a configuration tag and a dynamic array of configuration messages. Additionally, this service returns the configuration status using an 8-bit integer. The available and compliant services are displayed in the following list, where the user can double-click on them to make a configuration call.
+
+![./docs/Images/configs_monitor.svg](./docs/Images/configs_monitor.svg)
+
+Once clicked, a window opens where the user can perform the configuration call. Firstly, ALFA-Monitor checks if the node has sent the default configurations, and if so, this configuration will be displayed in this window, on the box labeled by the number 3. However, if no configuration was sent by the node, then, ALFA-Monitor searches in the filesystem for a configuration file with the same name as the topic. If both searches fail, then this window will be blank, but the user can load from the file system some previously saved configuration by pressing the button labeled 2. In this note, the user can also save the configurations in the filesystem by pressing the button labeled 1. To add configuration to the list, the user can press the button labeled 5. To delete a configuration, first, the user must select the one to be deleted and then click on button 4. To edit a configuration, the user must select the configuration, and proceed with the modifications by using the box labeled 5. Finally, to send the configurations, the user must click on button 7.
+
+![./docs/Images/configs.svg](./docs/Images/configs.svg)
+# Pointcloud Information
+To see the current point cloud display rate, as well as the number of points of the displaying point clouds, the user can go to the following tab.
+
+![./docs/Images/pointcloud_information.svg](./docs/Images/pointcloud_information.svg)
+# Connected Nodes
+ALFA-Monitor keeps track of all the nodes that follow the designed architecture. If a node is active, the node name and type is shown. It is also possible to check if a node is active or inactive, as well as its current state. 
+
+![./docs/Images/connected_nodes.svg](./docs/Images/connected_nodes.svg)
+
+# Box System
+The data related to a point or even the point cloud is shown in the following tab. Once in this tab, if the user shift+left clicks on a point, the information of that point will be displayed in the labeled box 1. Using the menu depicted as the labeled box 2, the user can add/delete boxes that assist with point cloud analysis and noise emulation. To add a new box the user clicks on the button "Add Box" and selects the size on the number dial. Then the user must click on the point cloud visualizer 1 in the desired area to deploy the box. Additionally, it is possible to save/load boxes from the filesystem to help test repeatability, which can be done in the labeled box 3. It is also possible to add noise and remove points from the point cloud. This is done using the placed boxes and depends on the box type, for example, when the "Add Noise" button is pressed, only the boxes labeled as "Noise Injector" will be used to add new points.
+
+![./docs/Images/box_tools.svg](./docs/Images/box_tools.svg)
+
+If the user doubles click on a box in the box list, the following window opens. In this window, the user can edit any settings related to the box selected. In the labeled box 1, the user selects the box type. The label boxes are used to calculate efficiency metrics like true positives.  The noise removal ones are used to delete the point inside the boxes. The noise injector ones are the location where random points will be injected.  The labeled box 2 is where the user can control the 3D dimensions and location of the selected box.
+
+![./docs/Images/box_settings.svg](./docs/Images/box_settings.svg)
+
+When the user clicks on the "Add Noise" button, the following window opens. In this window, the user can select the number of points to be injected into the point cloud, as well as the type of distribution. When using the gaussian noise, the parameters represent the standard deviation and the mean values of the gaussian distribution.
+
+![./docs/Images/noise_settings.svg](./docs/Images/noise_settings.svg)

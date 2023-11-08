@@ -1,0 +1,4 @@
+bags/*/*.db3
+bags/*/*.yaml
+.VSCodeCounter/*
+*.cam
